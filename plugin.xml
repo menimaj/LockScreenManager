@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-           id="com.superdrive.plugins"
+           id="com.superdrive.lockScreenManager"
       version="1.0.0">
     <name>LockScreenManager</name>
     <description>Locks and unlocks the screen</description>
@@ -21,6 +21,17 @@
             </feature>
         </config-file>
  
-        <source-file src="src/android/LockScreenManager.java" target-dir="src/org/superdrive/lockScreenManager" />      
+        <source-file src="src/android/LockScreenManager.java" target-dir="src/com/superdrive/lockScreenManager" />      
+		
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<service android:name="GlobalTouchService">
+			</service>
+		</config-file>
+		
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+			<uses-permission android:name="android.permission.GET_TASKS" />
+		</config-file>
+		
      </platform>          
 </plugin>
