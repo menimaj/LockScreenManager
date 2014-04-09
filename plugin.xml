@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+           id="com.superdrive.plugins"
+      version="1.0.0">
+    <name>LockScreenManager</name>
+    <description>Locks and unlocks the screen</description>
+    <license>MIT</license>
+    <keywords>phonegap,screen, lock</keywords>
+ 
+ 
+    <js-module src="www/lockScreenManager.js" name="LockScreenManager">
+        <clobbers target="window.lockScreenManager" />
+    </js-module>
+ 
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="LockScreenManager">
+                <param name="android-package" value="com.superdrive.plugins.LockScreenManager"/>
+            </feature>
+        </config-file>
+ 
+        <source-file src="src/android/LockScreenManager.java" target-dir="src/org/superdrive/lockScreenManager" />      
+     </platform>          
+</plugin>
