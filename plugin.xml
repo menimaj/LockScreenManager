@@ -19,9 +19,13 @@
             <feature name="LockScreenManager">
                 <param name="android-package" value="com.superdrive.plugins.LockScreenManager"/>
             </feature>
+			<feature name="GlobalTouchService">
+                <param name="android-package" value="com.superdrive.plugins.GlobalTouchService"/>
+            </feature>
         </config-file>
  
         <source-file src="src/android/LockScreenManager.java" target-dir="src/com/superdrive/lockScreenManager" />      
+		<source-file src="src/android/GlobalTouchService.java" target-dir="src/com/superdrive/lockScreenManager" />      
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<service android:name="GlobalTouchService">
