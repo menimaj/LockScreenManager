@@ -28,29 +28,42 @@ public class LockScreenManager extends CordovaPlugin
 	public static final String ACTION_ENABLE_SCREEN_LOCK = "lockScreen";
 	public static final String ACTION_DISABLE_SCREEN_LOCK = "unlockScreen";
 
-	//Intent globalService;
-	//Activity cordovaActivity = cordova.getActivity();
+	Intent globalService;
+	CallbackContext callbackCtx;
 	
 	@Override
 	public boolean execute(String action, JSONArray args,
 			CallbackContext callbackContext) throws JSONException {
+		
+		callbackCtx = callbackContext;
+		
 		try {
 			if (ACTION_ENABLE_SCREEN_LOCK.equals(action)) {
-				//globalService = new Intent(cordovaActivity, GlobalTouchService.class);
-				//cordovaActivity.startService(globalService);
+				Context context =  cordova.getActivity().getApplicationContext();
+				
+				globalService = new Intent(context, GlobalTouchService.class);
+				this.cordova.getActivity().startService(globalService);
+				
+		    	callbackCtx.success();
+				
 				return true;
 			}
 			if (ACTION_DISABLE_SCREEN_LOCK.equals(action)) {
-				//if (globalService != null) {
-		        //	cordovaActivity.stopService(globalService);
-		    	//}
+				if (globalService != null) {
+					cordova.getActivity().stopService(globalService);
+		    	}
+				
+				callbackContext.success();
 				return true;
 			}
 			
+			callbackContext.error("Invalid action");
 			return false;
 		} catch (Exception e) {
+			callbackContext.error(e.getMessage());
 			return false;
 		}
 	}
 }
+
 

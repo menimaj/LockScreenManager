@@ -4,6 +4,16 @@ var lockScreenManager = {
 					successCallback,
 					errorCallback,
 					'LockScreen',
+					'lockScreen',
+					[{}]
+			);
+		},
+		unlockScreen: function(successCallback, errorCallback) {			
+			cordova.exec(
+					successCallback,
+					errorCallback,
+					'LockScreenManager',
+					'unlockScreen',
 					[{}]
 			);
 		} 
