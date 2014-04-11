@@ -50,6 +50,8 @@ public class GlobalTouchService extends Service implements OnTouchListener{
 		
 		mParams.gravity = Gravity.LEFT | Gravity.TOP;
 		mWindowManager.addView(touchLayout, mParams);
+		
+		Toast.makeText(getApplicationContext(), "Service Started", Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
@@ -60,6 +62,8 @@ public class GlobalTouchService extends Service implements OnTouchListener{
 			}
 		}
 		super.onDestroy();
+		
+		Toast.makeText(getApplicationContext(), "Service Stopped", Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
