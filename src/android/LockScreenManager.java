@@ -23,6 +23,9 @@ import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
+import android.content.Intent;
+
 public class LockScreenManager extends CordovaPlugin 
 {
 	public static final String ACTION_ENABLE_SCREEN_LOCK = "lockScreen";
