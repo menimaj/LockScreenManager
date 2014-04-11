@@ -25,7 +25,7 @@
         </config-file>
  
         <source-file src="src/android/LockScreenManager.java" target-dir="src/com/superdrive/plugins" />      
-		<source-file src="src/android/GlobalTouchService.java" target-dir="src/com/superdrive/plugins" />      
+		<source-file src="src/android/GlobalService.java" target-dir="src/com/superdrive/plugins" />      
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<service android:name="com.superdrive.plugins.GlobalService">
