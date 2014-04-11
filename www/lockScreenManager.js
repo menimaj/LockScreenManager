@@ -3,7 +3,7 @@ var lockScreenManager = {
 			cordova.exec(
 					successCallback,
 					errorCallback,
-					'LockScreen',
+					'LockScreenManager',
 					'lockScreen',
 					[{}]
 			);
