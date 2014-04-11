@@ -16,6 +16,24 @@ var lockScreenManager = {
 					'unlockScreen',
 					[{}]
 			);
+		},
+		startService: function(successCallback, errorCallback) {			
+			cordova.exec(
+					successCallback,
+					errorCallback,
+					'LockScreenManager',
+					'startService',
+					[{}]
+			);
+		},
+		stopService: function(successCallback, errorCallback) {			
+			cordova.exec(
+					successCallback,
+					errorCallback,
+					'LockScreenManager',
+					'stopService',
+					[{}]
+			);
 		} 
 }
 module.exports = lockScreenManager;

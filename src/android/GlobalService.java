@@ -4,21 +4,22 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
-public class GlobalTouchService extends Service implements OnTouchListener{
+public class GlobalService extends Service {
 
+	private final IBinder mbinder = new LocalBinder();
+	
 	private WindowManager mWindowManager;
 	private LinearLayout touchLayout;
+	private WindowManager.LayoutParams mParams;
 
 	@Override
 	public void onCreate() {
@@ -33,52 +34,51 @@ public class GlobalTouchService extends Service implements OnTouchListener{
 
 		// set color if you want layout visible on screen
 		touchLayout.setBackgroundColor(Color.TRANSPARENT);
-		
-		// set on touch listener
-		touchLayout.setOnTouchListener(this);
 
 		// fetch window manager object
 		mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 		
 		// set layout parameter of window manager
-		WindowManager.LayoutParams mParams = new WindowManager.LayoutParams(150, 
-				150,
-				WindowManager.LayoutParams.TYPE_PHONE,
-				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | 
-				WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-				PixelFormat.TRANSLUCENT);
+		mParams = new WindowManager.LayoutParams(LayoutParams.MATCH_PARENT, 
+				LayoutParams.MATCH_PARENT,
+							WindowManager.LayoutParams.TYPE_PHONE,
+							WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | 
+							WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+							PixelFormat.TRANSLUCENT);
 		
 		mParams.gravity = Gravity.LEFT | Gravity.TOP;
-		mWindowManager.addView(touchLayout, mParams);
 		
 		Toast.makeText(getApplicationContext(), "Service Started", Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
+		
+		Toast.makeText(getApplicationContext(), "Service Stopped", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public IBinder onBind(Intent arg0) {
+		return mbinder;
+	}
+	
+	public class LocalBinder extends Binder {
+		public GlobalService getService(){
+			return GlobalService.this;
+		}
+	}
+	
+	public void LockScreen() {
+		mWindowManager.addView(touchLayout, mParams);
+	}
+	
+	public void UnlockScreen() {
 		if(mWindowManager != null) {
 			if(touchLayout != null) {
 				mWindowManager.removeView(touchLayout);
 			}
 		}
-		super.onDestroy();
-		
-		Toast.makeText(getApplicationContext(), "Service Stopped", Toast.LENGTH_SHORT).show();
-	}
-	
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		if(event.getAction() == MotionEvent.ACTION_DOWN) {
-			Log.d("super drive service", event.getRawX() + " , " + event.getRawY());
-		}
-		
-		return true;
-	}
-
-	@Override
-	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
 
