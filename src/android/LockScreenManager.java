@@ -56,7 +56,6 @@ public class LockScreenManager extends CordovaPlugin
 		}
 	}; 
 	
-	//Intent globalService;
 	CallbackContext callbackCtx;
 	
 	@Override
@@ -83,6 +82,7 @@ public class LockScreenManager extends CordovaPlugin
 			if (ACTION_START_SERVICE.equals(action)) {
 				Intent intent = new Intent(cordova.getActivity(), GlobalService.class);
 				cordova.getActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+				cordova.getActivity().startService(intent);
 				isServiceStarted = true;
 				
 				callbackCtx.success();
@@ -90,7 +90,9 @@ public class LockScreenManager extends CordovaPlugin
 			}
 			if (ACTION_STOP_SERVICE.equals(action)) {
 				if (isServiceStarted) {
+					Intent intent = new Intent(cordova.getActivity(), GlobalService.class);
 					cordova.getActivity().unbindService(serviceConnection);
+					cordova.getActivity().stopService(intent);
 					isServiceStarted = false;
 				}
 				
