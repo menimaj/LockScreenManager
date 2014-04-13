@@ -80,10 +80,12 @@ public class LockScreenManager extends CordovaPlugin
 				return true;
 			}
 			if (ACTION_START_SERVICE.equals(action)) {
-				Intent intent = new Intent(cordova.getActivity(), GlobalService.class);
-				cordova.getActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-				cordova.getActivity().startService(intent);
-				isServiceStarted = true;
+				if (!isServiceStarted) {
+					Intent intent = new Intent(cordova.getActivity(), GlobalService.class);
+					cordova.getActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+					cordova.getActivity().startService(intent);
+					isServiceStarted = true;
+				}
 				
 				callbackCtx.success();
 				return true;
