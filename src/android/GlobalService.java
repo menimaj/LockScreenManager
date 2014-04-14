@@ -47,6 +47,7 @@ public class GlobalService extends Service {
 							PixelFormat.TRANSLUCENT);
 		
 		mParams.gravity = Gravity.LEFT | Gravity.TOP;
+		mParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
 		
 		Toast.makeText(getApplicationContext(), "Service Started", Toast.LENGTH_SHORT).show();
 	}
