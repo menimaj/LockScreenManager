@@ -33,7 +33,7 @@ public class GlobalService extends Service {
 		touchLayout.setLayoutParams(lp);
 
 		// set color if you want layout visible on screen
-		touchLayout.setBackgroundColor(Color.TRANSPARENT);
+		touchLayout.setBackgroundColor(Color.argb(191, 49 ,49 ,49));
 
 		// fetch window manager object
 		mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -48,15 +48,11 @@ public class GlobalService extends Service {
 		
 		mParams.gravity = Gravity.LEFT | Gravity.TOP;
 		mParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-		
-		Toast.makeText(getApplicationContext(), "Service Started", Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		
-		Toast.makeText(getApplicationContext(), "Service Stopped", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
