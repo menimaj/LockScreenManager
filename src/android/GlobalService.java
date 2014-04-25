@@ -8,32 +8,49 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.Toast;
 
 public class GlobalService extends Service {
 
 	private final IBinder mbinder = new LocalBinder();
 	
 	private WindowManager mWindowManager;
-	private LinearLayout touchLayout;
+	private LinearLayout transparentLayout;
+	private Button btnUnlockScreen;
 	private WindowManager.LayoutParams mParams;
+	private WindowManager.LayoutParams mbtnParams;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		Log.d("super drive service", "service started");
 		// create linear layout
-		touchLayout = new LinearLayout(this);
+		transparentLayout = new LinearLayout(this);
 		
 		// set layout width 30 px and height is equal to full screen
 		LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		touchLayout.setLayoutParams(lp);
+		transparentLayout.setLayoutParams(lp);
 
 		// set color if you want layout visible on screen
-		touchLayout.setBackgroundColor(Color.argb(191, 49 ,49 ,49));
+		transparentLayout.setBackgroundColor(Color.TRANSPARENT);
+		
+		// create the unlock button to be on the transparent layout
+		btnUnlockScreen = new Button(this);
+		btnUnlockScreen.setBackgroundColor(Color.RED);
+		btnUnlockScreen.setText("לחץ לשחרור נעילה");
+		btnUnlockScreen.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// unlock the screen when the overlayed button is clicked
+				UnlockScreen();
+			}
+		});
+		LayoutParams btnParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		btnUnlockScreen.setLayoutParams(btnParams);
 
 		// fetch window manager object
 		mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -42,12 +59,20 @@ public class GlobalService extends Service {
 		mParams = new WindowManager.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.MATCH_PARENT,
 							WindowManager.LayoutParams.TYPE_PHONE,
-							WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | 
 							WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
 							PixelFormat.TRANSLUCENT);
 		
 		mParams.gravity = Gravity.LEFT | Gravity.TOP;
 		mParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+		
+		mbtnParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, 
+				LayoutParams.WRAP_CONTENT, 
+				WindowManager.LayoutParams.TYPE_PHONE,
+				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | 
+				WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+				PixelFormat.TRANSLUCENT);
+		
+		mbtnParams.gravity = Gravity.CENTER | Gravity.TOP;
 	}
 	
 	@Override
@@ -67,13 +92,15 @@ public class GlobalService extends Service {
 	}
 	
 	public void LockScreen() {
-		mWindowManager.addView(touchLayout, mParams);
+		mWindowManager.addView(transparentLayout, mParams);
+		mWindowManager.addView(btnUnlockScreen, mbtnParams);
 	}
 	
 	public void UnlockScreen() {
 		if(mWindowManager != null) {
-			if(touchLayout != null) {
-				mWindowManager.removeView(touchLayout);
+			if(transparentLayout != null) {
+				mWindowManager.removeView(transparentLayout);
+				mWindowManager.removeView(btnUnlockScreen);
 			}
 		}
 	}
