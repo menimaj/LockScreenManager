@@ -29,6 +29,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 
 public class LockScreenManager extends CordovaPlugin 
@@ -38,6 +39,7 @@ public class LockScreenManager extends CordovaPlugin
 	public static final String ACTION_ENABLE_SCREEN_LOCK = "lockScreen";
 	public static final String ACTION_DISABLE_SCREEN_LOCK = "unlockScreen";
 
+	private CordovaWebView cordovaWebView;
 	private GlobalService globalService;
 	private boolean isServiceStarted = false;
 	
@@ -52,11 +54,17 @@ public class LockScreenManager extends CordovaPlugin
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			LocalBinder binder = (LocalBinder) service;
-			globalService = binder.getService();
+			globalService = binder.getService(cordovaWebView);
 		}
 	}; 
 	
 	CallbackContext callbackCtx;
+	
+	@Override
+	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+		cordovaWebView = webView;
+		super.initialize(cordova, webView);
+	}
 	
 	@Override
 	public boolean execute(String action, JSONArray args,

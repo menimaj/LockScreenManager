@@ -1,5 +1,7 @@
 package com.superdrive.plugins;
 
+import org.apache.cordova.CordovaWebView;
+
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,7 +25,8 @@ public class GlobalService extends Service {
 	private Button btnUnlockScreen;
 	private WindowManager.LayoutParams mParams;
 	private WindowManager.LayoutParams mbtnParams;
-
+	private CordovaWebView cordovaWebView;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -46,7 +49,9 @@ public class GlobalService extends Service {
 			@Override
 			public void onClick(View v) {
 				// unlock the screen when the overlayed button is clicked
-				UnlockScreen();
+				if (cordovaWebView != null) {
+					cordovaWebView.sendJavascript("emergencyUnlockSreen()");
+				}
 			}
 		});
 		LayoutParams btnParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -86,7 +91,8 @@ public class GlobalService extends Service {
 	}
 	
 	public class LocalBinder extends Binder {
-		public GlobalService getService(){
+		public GlobalService getService(CordovaWebView webview){
+			cordovaWebView = webview;
 			return GlobalService.this;
 		}
 	}
