@@ -26,6 +26,7 @@
  
         <source-file src="src/android/LockScreenManager.java" target-dir="src/com/superdrive/plugins" />      
 		<source-file src="src/android/GlobalService.java" target-dir="src/com/superdrive/plugins" />      
+		<source-file src="res/android/locker.png" target-dir="res/drawable" />
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<service android:name="com.superdrive.plugins.GlobalService">
