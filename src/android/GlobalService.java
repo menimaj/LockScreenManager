@@ -2,6 +2,8 @@ package com.superdrive.plugins;
 
 import org.apache.cordova.CordovaWebView;
 
+import com.apps.superdrive.R;
+
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,7 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -22,7 +24,7 @@ public class GlobalService extends Service {
 	
 	private WindowManager mWindowManager;
 	private LinearLayout transparentLayout;
-	private Button btnUnlockScreen;
+	private ImageButton btnUnlockScreen;
 	private WindowManager.LayoutParams mParams;
 	private WindowManager.LayoutParams mbtnParams;
 	private CordovaWebView cordovaWebView;
@@ -42,9 +44,10 @@ public class GlobalService extends Service {
 		transparentLayout.setBackgroundColor(Color.TRANSPARENT);
 		
 		// create the unlock button to be on the transparent layout
-		btnUnlockScreen = new Button(this);
+		btnUnlockScreen = new ImageButton(this);
 		btnUnlockScreen.setBackgroundColor(Color.RED);
-		btnUnlockScreen.setText("לחץ לשחרור נעילה");
+		btnUnlockScreen.setImageResource(R.drawable.locker);
+		btnUnlockScreen.setPadding(0, 50, 0, 50);
 		btnUnlockScreen.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -54,9 +57,9 @@ public class GlobalService extends Service {
 				}
 			}
 		});
-		LayoutParams btnParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		LayoutParams btnParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		btnUnlockScreen.setLayoutParams(btnParams);
-
+		
 		// fetch window manager object
 		mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 		
@@ -70,14 +73,15 @@ public class GlobalService extends Service {
 		mParams.gravity = Gravity.LEFT | Gravity.TOP;
 		mParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
 		
-		mbtnParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, 
+		mbtnParams = new WindowManager.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.WRAP_CONTENT, 
 				WindowManager.LayoutParams.TYPE_PHONE,
 				WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | 
 				WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
 				PixelFormat.TRANSLUCENT);
 		
-		mbtnParams.gravity = Gravity.CENTER | Gravity.TOP;
+		mbtnParams.gravity = Gravity.BOTTOM;
+		mbtnParams.y = Gravity.BOTTOM -25;
 	}
 	
 	@Override
